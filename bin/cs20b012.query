@@ -1,0 +1,4 @@
+create mytab 2
+int a
+string b
+insert into mytab values 12,"adsad"

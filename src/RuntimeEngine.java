@@ -18,7 +18,10 @@ public class RuntimeEngine {
     if(s[1].equals("int")){
         attribute.type = Integer.class;
     }
-    else if(s[2].equals("string")){
+    else if(s[1].equals("int")){
+      attribute.type = Float.class;
+    }
+    else if(s[1].equals("string")){
         attribute.type = String.class;
     }
 
@@ -34,6 +37,9 @@ public class RuntimeEngine {
       {
           if(table.attributeList.get(idx).type == Integer.class){
               record.values.add(Integer.parseInt(s[i]));   
+          }
+          else if(table.attributeList.get(idx).type == Float.class){
+            record.values.add(Float.parseFloat(s[i]));   
           }
           else if(table.attributeList.get(idx).type == String.class){
               record.values.add(s[i].substring(1, s[i].length()-1));
