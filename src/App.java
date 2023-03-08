@@ -43,6 +43,7 @@ public class App {
         {
             intermediateCode = parseQuery(args[0]);
         }
+        System.out.println(intermediateCode);
         RuntimeEngine engine = new RuntimeEngine();
         engine.execute(intermediateCode);
     }
