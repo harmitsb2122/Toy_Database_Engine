@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class RuntimeEngine {
@@ -54,9 +55,34 @@ public class RuntimeEngine {
     db.saveData(table);
   }
 
-  public Table loadTable(String tablename){ 
+  private Table loadTable(String tablename){ 
     Database db = new Database();
     return db.loadData(tablename);
+  }
+
+  public void displayTable(String token){ 
+    String [] s = token.split(" ");
+    Table table = loadTable(s[1]);
+
+    //--------- DESERIALIZATION ---------
+    try{
+
+      FileInputStream fileInputStream = new FileInputStream(s[1]+".db");
+      ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+      table = (Table) objectInputStream.readObject(); 
+      objectInputStream.close();
+      fileInputStream.close();
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
+    finally{
+      for(int i = 0; i < table.attributeList.size();i++)
+      {
+        System.out.print(table.attributeList.get(i).name);
+      }
+    }
   }
 
   public void execute(String code)
@@ -81,6 +107,10 @@ public class RuntimeEngine {
       if(token.startsWith("save_table"))
       {
         saveTable(table);
+      }
+      if(token.startsWith("select_all_from"))
+      {
+        displayTable(token);
       }
   
     }

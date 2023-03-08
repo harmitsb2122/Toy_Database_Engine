@@ -43,7 +43,16 @@ public class QueryParser {
       }
       else if(token.equals("select"))
       {
-        // TODO: Would be taken up at last
+        // skipping the *
+        token = stringTokenizer.nextToken();
+        
+        //skipping from keyword
+        token = stringTokenizer.nextToken();
+        
+        // table name
+        token = stringTokenizer.nextToken();
+
+        intermediateCode+="select_all_from "+token+'\n';
       }
 
     }
