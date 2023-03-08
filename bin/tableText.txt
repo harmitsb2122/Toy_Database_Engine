@@ -1,4 +1,0 @@
-Table Name - cs20b012_table2
-
-|	i21	|	i22	|	s21	|	s22	|	d21	|	d22	|	
-|	12	|	433	|	cs20b012	|	Harmit	|	Mon Mar 08 00:00:00 IST 202	|	Fri Feb 09 00:00:00 IST 182	|	

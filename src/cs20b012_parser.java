@@ -12,7 +12,6 @@ public class cs20b012_parser {
         String code;
         code = "";
         try{
-
             reader = new BufferedReader(new FileReader(file));
             String query,cur_line;
             query = "";

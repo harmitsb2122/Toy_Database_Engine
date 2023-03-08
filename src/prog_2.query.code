@@ -1,3 +1,0 @@
-insert_into mytab 12,"cs20b012"
-insert_into mytab 13,"Harmit"
-select_all_from mytab

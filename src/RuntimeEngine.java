@@ -99,30 +99,41 @@ public class RuntimeEngine {
     finally{
       String tableText = "Table Name - ";
       tableText+=table.name+"\n\n";
-      tableText+="|\t";
+
       for(int i = 0; i < table.attributeList.size();i++)
       {
-        tableText += table.attributeList.get(i).name+"\t|\t";
+        tableText += table.attributeList.get(i).name+"\t\t";
       }
       tableText+="\n";
       for(int i = 0; i < table.recordList.size();i++)
       {
-        tableText+="|\t";
         for(int j=0;j<table.recordList.get(i).values.size();j++)
         {
-          tableText += table.recordList.get(i).values.get(j)+"\t|\t";
+          tableText += table.recordList.get(i).values.get(j)+"\t\t";
         }
         tableText+="\n";
       }
       System.out.print(tableText);
-      try 
-      {
-          FileWriter fWriter = new FileWriter("tableText.txt");
-          fWriter.write(tableText);
-          fWriter.close();
+      try{
+
+        FileWriter csvWriter = new FileWriter("tableText" + ".csv");
+        csvWriter.append("Table Name - " + table.name + "\n");
+        for (Attribute attr : table.attributeList) {
+            csvWriter.append(attr.name + ",");
+        }
+        csvWriter.append("\n");
+        for (Record record : table.recordList) {
+            for (Object value : record.values) {
+                csvWriter.append(value + ",");
+            }
+            csvWriter.append("\n");
+        }
+        csvWriter.flush();
+        csvWriter.close();
       }
-      catch (IOException e) {
-          System.out.print(e.getMessage());
+      catch(Exception e)
+      {
+        System.out.println(e);
       }
     }
   }
