@@ -1,5 +1,0 @@
-create mytable 2 
-string a
-int b 
-insert into mytable values "Hello",2
-insert into mytable values "CS12",4

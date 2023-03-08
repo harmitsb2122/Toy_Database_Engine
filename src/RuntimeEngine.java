@@ -29,27 +29,28 @@ public class RuntimeEngine {
       String [] s = token.split("[ ,]+");
       Table table = loadTable(s[1]);
       int idx = 0;
-      Record row = new Record();
+      Record record = new Record();
       for(int i = 2; i < s.length;i++,idx++)
       {
           if(table.attributeList.get(idx).type == Integer.class){
-              row.values.add(Integer.parseInt(s[i]));   
+              record.values.add(Integer.parseInt(s[i]));   
           }
           else if(table.attributeList.get(idx).type == String.class){
-              row.values.add(s[i].substring(1, s[i].length()-1));
+              record.values.add(s[i].substring(1, s[i].length()-1));
           }
       }
-      table.recordList.add(row);
+      table.recordList.add(record);
       saveTable(table);
   }
 
   private void saveTable(Table table){
-    // TODO
+    Database db = new Database();
+    db.saveData(table);
   }
 
-  public Table loadTable(String tablename){
-    // TODO 
-    return new Table();
+  public Table loadTable(String tablename){ 
+    Database db = new Database();
+    return db.loadData(tablename);
   }
 
   public void execute(String code)
@@ -65,7 +66,7 @@ public class RuntimeEngine {
       }
       if(token.startsWith("insert_into"))
       {
-        // insertInto(token);
+        insertInto(token);
       }
       if(token.startsWith("add_attribute"))
       {
