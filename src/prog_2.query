@@ -1,3 +1,4 @@
-insert into mytab values 12,"kalidas"
-insert into mytab values 13,"abcd"
+insert into mytab values 12,"cs20b012"
+insert into mytab values 13,"Harmit"
+select * from mytab
 

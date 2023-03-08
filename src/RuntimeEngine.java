@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Date; 
+import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 
 public class RuntimeEngine {
@@ -14,16 +16,20 @@ public class RuntimeEngine {
   private void addAttribute(Table table,String token){
     String[] s = token.split(" ");
     Attribute attribute = new Attribute();
-    attribute.name = s[1];
+    attribute.name = s[2];
     
     if(s[1].equals("int")){
         attribute.type = Integer.class;
     }
-    else if(s[1].equals("int")){
+    else if(s[1].equals("float")){
       attribute.type = Float.class;
     }
     else if(s[1].equals("string")){
         attribute.type = String.class;
+    }
+    else if(s[1].equals("date"))
+    {
+      attribute.type = Date.class;
     }
 
     table.attributeList.add(attribute);
@@ -40,10 +46,23 @@ public class RuntimeEngine {
               record.values.add(Integer.parseInt(s[i]));   
           }
           else if(table.attributeList.get(idx).type == Float.class){
+            System.out.println("boom!\n");
             record.values.add(Float.parseFloat(s[i]));   
           }
           else if(table.attributeList.get(idx).type == String.class){
               record.values.add(s[i].substring(1, s[i].length()-1));
+          }
+          else if(table.attributeList.get(idx).type == Date.class){
+            String SDate = s[i].substring(1, s[i].length()-1);
+            try{
+
+              Date date = new SimpleDateFormat("dd/MM/yyyy").parse(SDate);
+              record.values.add(date);
+            }
+            catch(Exception e)
+            {
+              System.out.println(e);
+            }
           }
       }
       table.recordList.add(record);
@@ -64,7 +83,7 @@ public class RuntimeEngine {
     String [] s = token.split(" ");
     Table table = loadTable(s[1]);
 
-    //--------- DESERIALIZATION ---------
+    // DESERIALIZATION 
     try{
 
       FileInputStream fileInputStream = new FileInputStream(s[1]+".db");
@@ -78,9 +97,32 @@ public class RuntimeEngine {
       e.printStackTrace();
     }
     finally{
+      String tableText = "Table Name - ";
+      tableText+=table.name+"\n\n";
+      tableText+="|\t";
       for(int i = 0; i < table.attributeList.size();i++)
       {
-        System.out.print(table.attributeList.get(i).name);
+        tableText += table.attributeList.get(i).name+"\t|\t";
+      }
+      tableText+="\n";
+      for(int i = 0; i < table.recordList.size();i++)
+      {
+        tableText+="|\t";
+        for(int j=0;j<table.recordList.get(i).values.size();j++)
+        {
+          tableText += table.recordList.get(i).values.get(j)+"\t|\t";
+        }
+        tableText+="\n";
+      }
+      System.out.print(tableText);
+      try 
+      {
+          FileWriter fWriter = new FileWriter("tableText.txt");
+          fWriter.write(tableText);
+          fWriter.close();
+      }
+      catch (IOException e) {
+          System.out.print(e.getMessage());
       }
     }
   }

@@ -1,0 +1,7 @@
+create_table cs20b012_table1
+add_attribute int i1
+add_attribute string s1
+add_attribute date d1
+save_table cs20b012_table1
+insert_into cs20b012_table1 12,"cs20b012",08/03/2023
+select_all_from cs20b012_table1

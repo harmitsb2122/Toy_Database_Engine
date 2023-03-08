@@ -1,0 +1,6 @@
+create cs20b012_table1 3
+int i1
+string s1
+date d1
+insert into cs20b012_table1 values 12,"cs20b012",08/03/2023
+select * from cs20b012_table1

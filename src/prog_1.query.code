@@ -1,0 +1,15 @@
+create_table mytab
+add_attribute int a
+add_attribute string b
+save_table mytab
+create_table mytab2
+add_attribute int a
+add_attribute string b
+add_attribute string c
+save_table mytab2
+create_table mytab3
+add_attribute int a1
+add_attribute string b1
+add_attribute string c1
+add_attribute int d1
+save_table mytab3

@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class App {
+public class cs20b012_parser {
     /**
      * Wrapper function to read the contents from the query file , parse them and return the intermediate code
      * @param file
@@ -35,6 +35,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         String intermediateCode;
+        String intermediateCodeFilename = "cs20b012.query.code";
         if(args.length == 0)
         {
             intermediateCode = parseQuery("cs20b012.query");
@@ -42,8 +43,17 @@ public class App {
         else
         {
             intermediateCode = parseQuery(args[0]);
+            intermediateCodeFilename = args[0]+".code";
+        }        
+        try 
+        {
+            FileWriter fWriter = new FileWriter(intermediateCodeFilename);
+            fWriter.write(intermediateCode);
+            fWriter.close();
         }
-        System.out.println(intermediateCode);
+        catch (IOException e) {
+            System.out.print(e.getMessage());
+        }
         RuntimeEngine engine = new RuntimeEngine();
         engine.execute(intermediateCode);
     }

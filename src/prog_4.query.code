@@ -1,0 +1,10 @@
+create_table cs20b012_table2
+add_attribute int i21
+add_attribute int i22
+add_attribute string s21
+add_attribute string s22
+add_attribute date d21
+add_attribute date d22
+save_table cs20b012_table2
+insert_into cs20b012_table2 12,433,"cs20b012","Harmit",08/03/2023,09/02/1822
+select_all_from cs20b012_table2
