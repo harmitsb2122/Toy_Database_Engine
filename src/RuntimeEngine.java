@@ -116,7 +116,7 @@ public class RuntimeEngine {
       System.out.print(tableText);
       try{
 
-        FileWriter csvWriter = new FileWriter("tableText" + ".csv");
+        FileWriter csvWriter = new FileWriter("Database" + ".csv",true);
         csvWriter.append("Table Name - " + table.name + "\n");
         for (Attribute attr : table.attributeList) {
             csvWriter.append(attr.name + ",");
@@ -128,6 +128,7 @@ public class RuntimeEngine {
             }
             csvWriter.append("\n");
         }
+        csvWriter.append("\n");
         csvWriter.flush();
         csvWriter.close();
       }

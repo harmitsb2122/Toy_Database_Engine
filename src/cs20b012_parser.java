@@ -33,6 +33,14 @@ public class cs20b012_parser {
     }
 
     public static void main(String[] args) throws Exception {
+        try {
+            FileWriter csvWriter = new FileWriter("Database.csv");
+            csvWriter.write(""); // write an empty string to clear the file
+            csvWriter.flush();
+            csvWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }       
         String intermediateCode;
         String intermediateCodeFilename = "cs20b012.query.code";
         if(args.length == 0)
