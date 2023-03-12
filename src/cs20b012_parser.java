@@ -1,4 +1,17 @@
+/**
+ * Author CS20B012
+ * cs20b012.query contains all the queries asked
+ * To generate random queries - randomQueryGenerator.py is used
+ * * To run :
+ * * Type - javac cs20b012_parser.java
+ * * Type - java cs20b012_parser
+ * * If no file arguments are provided the cs20b012.query file would used as query file
+ * * otherwise the file name can be given as argument
+ * * Input - filename.query / cs20b012.query (if no filename is specified)
+ * * Output - filename.query.code file 
+ */
 import java.io.*;
+import java.util.StringTokenizer;
 
 public class cs20b012_parser {
     /**
@@ -32,15 +45,7 @@ public class cs20b012_parser {
         return code;
     }
 
-    public static void main(String[] args) throws Exception {
-        try {
-            FileWriter csvWriter = new FileWriter("Database.csv");
-            csvWriter.write(""); // write an empty string to clear the file
-            csvWriter.flush();
-            csvWriter.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }       
+    public static void main(String[] args) throws Exception {     
         String intermediateCode;
         String intermediateCodeFilename = "cs20b012.query.code";
         if(args.length == 0)
@@ -61,7 +66,67 @@ public class cs20b012_parser {
         catch (IOException e) {
             System.out.print(e.getMessage());
         }
-        RuntimeEngine engine = new RuntimeEngine();
-        engine.execute(intermediateCode);
+
     }
 }
+
+class QueryParser {
+
+  public String parse(String query)
+  {
+    StringTokenizer stringTokenizer = new StringTokenizer(query);
+    String intermediateCode ;
+    intermediateCode = "";
+    while(stringTokenizer.hasMoreTokens())
+    {
+      String token = stringTokenizer.nextToken();
+      if(token.equals("create"))
+      {
+        intermediateCode+="create_table ";
+        String tableName = stringTokenizer.nextToken();
+        intermediateCode+=tableName;
+        intermediateCode+='\n';
+        int n = Integer.parseInt(stringTokenizer.nextToken());
+        for(int i=0;i<n;i++)
+        {
+          String attributeType = stringTokenizer.nextToken();
+          String attributeName = stringTokenizer.nextToken();
+          intermediateCode+=("add_attribute "+attributeType+" "+attributeName+'\n');
+        }
+        intermediateCode+=("save_table "+tableName+'\n');
+      }
+      else if(token.equals("insert"))
+      {
+        // skip into keyword
+        token = stringTokenizer.nextToken();
+        String tableName = stringTokenizer.nextToken();
+        
+        intermediateCode+="insert_into "+tableName+" ";
+
+        //skip values keyword
+        token = stringTokenizer.nextToken();
+
+        token = stringTokenizer.nextToken();
+
+        intermediateCode+=token+'\n';
+
+      }
+      else if(token.equals("select"))
+      {
+        // skipping the *
+        token = stringTokenizer.nextToken();
+        
+        //skipping from keyword
+        token = stringTokenizer.nextToken();
+        
+        // table name
+        token = stringTokenizer.nextToken();
+
+        intermediateCode+="select_all_from "+token+'\n';
+      }
+
+    }
+    return intermediateCode;
+  }  
+}
+

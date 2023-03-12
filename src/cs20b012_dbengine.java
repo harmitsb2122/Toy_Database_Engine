@@ -1,9 +1,69 @@
+/**
+ * Author CS20B012
+ * cs20b012.query.code contains the intermediate code
+ * 
+ * * To run :
+ * * Type - javac cs20b012_dbengine.java
+ * * Type - java cs20b012_dbengine
+ * * If no file arguments are provided the cs20b012.query.code file would used as code file
+ * * otherwise the file name can be given as argument
+ * * Input - filename.query.code / cs20b012.query.code (if no filename is specified)
+ * * Output - .db files for the tables specified (serialization of Table object) 
+ * * , .csv (deserialized Tables are stored in Database.csv)
+ * *  
+ */
 import java.io.*;
 import java.util.Date; 
 import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.nio.file.Files;
 
-public class RuntimeEngine {
+public class cs20b012_dbengine {
+  public static void main(String[] args) {
+    try 
+    {
+        FileWriter csvWriter = new FileWriter("Database.csv");
+        csvWriter.write(""); // write an empty string to clear the file
+        csvWriter.flush();
+        csvWriter.close();
+    }
+    catch (Exception e) {
+        System.out.println(e);
+    }  
+    BufferedReader reader;
+    String intermediateCode = "",fileName="";
+    if(args.length == 0)
+    {
+        fileName = "cs20b012.query.code";
+    }
+    else
+    {
+        fileName = args[0];
+    }        
+    try{
+        reader = new BufferedReader(new FileReader(fileName));
+        String cur_line = "";
+        cur_line = reader.readLine();
+        while(cur_line!=null)
+        {
+            intermediateCode+=cur_line+'\n';
+            cur_line = reader.readLine();
+        }
+        reader.close();
+    }
+    catch(IOException e)
+    {
+        e.printStackTrace();
+    }
+    RuntimeEngine engine = new RuntimeEngine();
+    engine.execute(intermediateCode);   
+  }
+}
+
+
+class RuntimeEngine {
 
   private Table createTable(String token)
   {
@@ -46,7 +106,6 @@ public class RuntimeEngine {
               record.values.add(Integer.parseInt(s[i]));   
           }
           else if(table.attributeList.get(idx).type == Float.class){
-            System.out.println("boom!\n");
             record.values.add(Float.parseFloat(s[i]));   
           }
           else if(table.attributeList.get(idx).type == String.class){
@@ -169,4 +228,68 @@ public class RuntimeEngine {
   
     }
   }
+}
+
+class Table implements Serializable{
+  public String name;
+  public ArrayList<Attribute> attributeList;
+  public ArrayList<Record> recordList;
+
+  Table()
+  {
+    attributeList = new ArrayList<>();
+    recordList = new ArrayList<>();
+  }
+}
+
+class Attribute implements Serializable{
+  public Class type;
+  public String name;
+  Attribute()
+  {
+    type = null;
+    name = null;
+  }
+}
+
+class Record implements Serializable{
+  public ArrayList<Object> values;
+  Record(){
+    values = new ArrayList<>();
+  }
+}
+
+class Database {
+
+  public void saveData(Table table){
+    try {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
+        objectStream.writeObject(table);
+        byte[] byteArray = byteStream.toByteArray();
+        FileOutputStream outputStream = new FileOutputStream(new File(table.name+".db"));
+        outputStream.write(byteArray);
+        objectStream.close();
+        outputStream.close();
+    }
+    catch(Exception e){
+        e.printStackTrace();
+    }
+}
+
+public Table loadData(String tableName){
+    Table table = null;
+
+    try{
+        byte[] byte_array = Files.readAllBytes(new File(tableName+".db").toPath());
+        ByteArrayInputStream byteStream = new ByteArrayInputStream(byte_array);
+        ObjectInputStream objectStream = new ObjectInputStream(byteStream);
+        table = (Table)objectStream.readObject();
+        objectStream.close();
+    }
+    catch(Exception e){
+        e.printStackTrace();
+    }
+    return table;
+}
 }

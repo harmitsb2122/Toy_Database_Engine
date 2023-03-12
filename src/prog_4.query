@@ -1,9 +1,0 @@
-create cs20b012_table2 6
-int i21
-int i22
-string s21
-string s22
-date d21
-date d22
-insert into cs20b012_table2 values 12,433,"cs20b012","Harmit",08/03/2023,09/02/1822
-select * from cs20b012_table2
